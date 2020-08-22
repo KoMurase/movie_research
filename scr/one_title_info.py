@@ -17,8 +17,8 @@ import pandas as pd
 def scraiping_from_url(url):
     print(url)
 
-    title_url = url
-    #title_url = "https://filmarks.com//movies/63466"
+    #title_url = url
+    title_url = "https://filmarks.com/movies/386"
     t_r = requests.get(title_url)
     t_soup = BeautifulSoup(t_r.text, 'lxml')
 
@@ -133,31 +133,35 @@ def scraiping_from_url(url):
         #print(p.find("h3", class_="p-content-detail__people-list-term").text)
         job_type = p.find("h3", class_="p-content-detail__people-list-term").text
         if job_type == "監督":
-            li = p.find("li", class_="p-content-detail__people-list-desc")
+            li = p.find_all("li", class_="p-content-detail__people-list-desc")
+            print(li)
             for l in li:
-                name = l.text
+                name = l.find("a", class_="c-label").text
+                print("name",name)
                 kantoku.append(name)
             #print(job_type, name)
+
         elif job_type == "脚本":
-            li = p.find("li", class_="p-content-detail__people-list-desc")
+            li = p.find_all("li", class_="p-content-detail__people-list-desc")
             for l in li:
-                name = l.text
-                kantoku.append(name)
-            #name = p.find("li", class_="p-content-detail__people-list-desc").text
+                name = l.find("a", class_="c-label").text
+                #name = p.find("li", class_="p-content-detail__people-list-desc").text
                 kyakuhon.append(name)
             #print(job_type, name)
         
         elif job_type == "原作":
             #name = p.find("li", class_="p-content-detail__people-list-desc").text
             #gensaku.append(name)
-            li = p.find("li", class_="p-content-detail__people-list-desc")
+            li = p.find_all("li", class_="p-content-detail__people-list-desc")
             for l in li:
                 name = l.text
-                kyakuhon.append(name)
+                gensaku.append(name)
             #name = p.find("li", class_="p-content-detail__people-list-desc").text
             print(job_type, name)
     
-
+    print("kantoku",kantoku)
+    print("kyakuhon",kyakuhon)
+    print("gensaku",gensaku)
     casts = []
     li = t_soup.find_all("li", class_="p-content-detail__people-list-desc")
     for l in li:
