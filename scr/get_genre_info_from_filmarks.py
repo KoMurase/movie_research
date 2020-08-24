@@ -104,12 +104,12 @@ if __name__ == "__main__":
     elif num == 25: genre = "ドキュメンタリー"
     elif num == 26: genre = "パニック"
 
-    url_path = r'C:\Users\mkou0\Desktop\film_search\genre_url.pickle'
+    url_path = r'C:\Users\mkou0\Desktop\movie_search\genre_url.pickle'
     print("{}の映画情報がわかるURLをスクレイピングします...".format(genre))
     urls = get_genre_info(genre ,url_path)
     print(urls)
 
-    save_dir = r'C:\Users\mkou0\Desktop\film_search\urls'
+    save_dir = r'C:\Users\mkou0\Desktop\movie_search\urls'
     os.makedirs(save_dir, exist_ok=True) 
     #保存先のディレクトリの作成
     save_dir = save_dir+r'\url_{}'.format(genre) 

@@ -17,23 +17,23 @@ import pandas as pd
 def scraiping_from_url(url):
     print(url)
 
-    #title_url = url
-    title_url = "https://filmarks.com/movies/386"
+    title_url = url
+    #title_url = "https://filmarks.com//movies/41216"
     t_r = requests.get(title_url)
     t_soup = BeautifulSoup(t_r.text, 'lxml')
 
 
-    meta_tag = t_soup.find("meta", content=lambda x: x and "レビュー数" in x)
+    meta_tag = t_soup.find("meta", content=lambda x: x and "レビュー数：" in x)
 
     # レビュー数：99806件 ／ 平均スコア：★★★★4.0点 から正規表現で件数だけ取り出す。
-    print(meta_tag["content"])
+    #print(meta_tag["content"])
     n_review = re.search(r"([0-9]*件)|([^0-9]点)", meta_tag["content"]).group(1)
-    print(n_review)
+    #print(n_review)
 
     #meta_tag = t_soup.find("meta", content=lambda x: x and "平均スコア" in x)
     #print(meta_tag)
     n_score = re.search(r"([0-9]*.[0-9]*点)|([^0-9]点)", meta_tag["content"]).group(1)
-    print(n_score)
+    #print(n_score)
 
     #タイトル (ja)
     title_j = ""
@@ -85,7 +85,7 @@ def scraiping_from_url(url):
             year = re.search(r"(\d*)年",w).group(1)
                 
         
-    print(year, month, day)
+    #print(year, month, day)
     if "製作国：" in w:
         #place = w.split("／")[0].replace("製作国：",'')
         place = re.search("製作国："+r"(.+)", w).group(0)
@@ -96,7 +96,8 @@ def scraiping_from_url(url):
     if "上映時間：" in w:
         show_time = re.search(r"(\d*)分", w).group(1)
     #print(year, month, day)
-    print( place, show_time)
+    #print( place, show_time)
+
     #ジャンル
     genre = t_soup.find_all("div", class_="p-content-detail__genre")
     genre = genre[0].text.replace("ジャンル：", "")
@@ -134,7 +135,7 @@ def scraiping_from_url(url):
         job_type = p.find("h3", class_="p-content-detail__people-list-term").text
         if job_type == "監督":
             li = p.find_all("li", class_="p-content-detail__people-list-desc")
-            print(li)
+            #print(li)
             for l in li:
                 name = l.find("a", class_="c-label").text
                 print("name",name)
@@ -159,9 +160,9 @@ def scraiping_from_url(url):
             #name = p.find("li", class_="p-content-detail__people-list-desc").text
             print(job_type, name)
     
-    print("kantoku",kantoku)
-    print("kyakuhon",kyakuhon)
-    print("gensaku",gensaku)
+    #print("kantoku",kantoku)
+    #print("kyakuhon",kyakuhon)
+    #print("gensaku",gensaku)
     casts = []
     li = t_soup.find_all("li", class_="p-content-detail__people-list-desc")
     for l in li:
@@ -170,7 +171,7 @@ def scraiping_from_url(url):
         casts.append(cast)
 
     return n_review, n_score, title_j, title_e, wh_created,year,month,day, \
-        place, show_time, genre, summary, kantoku, kyakuhon, gensaku, casts
+        place, show_time, genre, summary, kantoku, kyakuhon, gensaku, casts, title_url 
 
 def pickle_load(file_):
 
@@ -196,7 +197,7 @@ if __name__ == '__main__':
     genre = genres[num]
     print("{}の映画情報をCSVファイルにまとめていきまSHOW TIME !!".format(genre))
 
-    save_dir = r'C:\Users\mkou0\Desktop\film_search\urls'
+    save_dir = r'C:\Users\mkou0\Desktop\movie_search\urls'
     path = save_dir + r"\url_{}".format(genre)
 
     pickle_files = os.listdir(path)
@@ -216,22 +217,22 @@ if __name__ == '__main__':
     columns = [
         "レビュー数", "平均スコア","タイトル(日本名)","タイトル(英名)","製作日",
         "年(上映日)","月(上映日)","日(上映日)","製作国", "上映時間","ジャンル","あらすじ",
-        "監督", "脚本", "原作", "キャスト" 
+        "監督", "脚本", "原作", "キャスト" ,"URL"
         ] 
     #csvの保存先
-    save_csv_dir = r"C:\Users\mkou0\Desktop\film_search\csv"
+    save_csv_dir = r"C:\Users\mkou0\Desktop\movie_search\csv"
     os.makedirs(save_csv_dir, exist_ok=True) 
     genre_data = pd.DataFrame()
     
     for i, url in enumerate(tqdm(urls)):
         
         n_review, n_score, title_j, title_e, wh_created,year,month,day, \
-        place, show_time, genre, summary, kantoku, kyakuhon, gensaku, casts= scraiping_from_url(url)
+        place, show_time, genre, summary, kantoku, kyakuhon, gensaku, casts, title_url= scraiping_from_url(url)
 
 
         data = [n_review, n_score, title_j, title_e, wh_created, \
                 year, month, day, place, show_time, genre, summary, \
-                kantoku, kyakuhon, gensaku, casts]
+                kantoku, kyakuhon, gensaku, casts, title_url]
 
         #print(len(data))
         #print([k for k in data])
