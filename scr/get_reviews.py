@@ -50,10 +50,9 @@ for p in p_marks:
 #for i, r in enumerate(reviews):
 #    print("score:{}, review:{}".format((i, r)))
 
-def get_urls_per_page(url):
-    url = "https://filmarks.com/movies/63747"
-
-    title_url = url
+def get_urls_per_page(url, genre):
+   
+    title_url = "https://filmarks.com/movies/63747"
     t_r = requests.get(title_url)
     t_soup = BeautifulSoup(t_r.text, 'lxml')
 
@@ -64,28 +63,87 @@ def get_urls_per_page(url):
     max_page = int(n_page.get('href').split("=")[-1])
     print(max_page)
 
+    #1タイトルにおけるreview情報のURL全部
     p_urls = []
-
     for p in tqdm(range(1, max_page+1)):
         p_url = title_url + '?page=' + str(p)
         p_urls.append(p_url)
 
+    id_ = title_url.split("/")[-1] #映画情報固有のURLの末尾数桁
+
+    save_title_url(genre, id_, p_urls)
+
+def save_title_url(genre, id_, p_urls):
+    
+    save_path = r'C:\Users\mkou0\Desktop\movie_search\review_urls\{}\id_{}.pickle'.format(genre, id_)
+
+    with open(save_path, mode='wb') as f:
+        pickle.dump(p_urls,f)
+
+    return "Saved the reviews of id:{}".format(id_)
+
+def open_title_url(genre, id_):
+    
+    save_path = r'C:\Users\mkou0\Desktop\movie_search\review_urls\{}\id_{}.pickle'.format(genre, id_)
+
+    with open(save_path, mode='wb') as f:
+        p_urls = pickle.dump(save_path, f)
+
     return p_urls
 
-#タイトルがあるかどうかのcheck
-def check_title(df):
-    df = df.copy() 
-    df["flg_title"] = 0
-    if df["タイトル（日本名）"] != "":
-        df["flg_title"] = 1
-    if df["タイトル（英名）"] != "":
-        df["flg_title"] = 1 
+def get_reviews(p_url, genre):
+
+    page = p_url.split('=')[-1]
+    t_r = requests.get(p_url)
+    t_soup = BeautifulSoup(t_r.text, 'lxml')
+
+    #タイトル (ja)
+    title_j = ""
+    title_e = ""
+    li = t_soup.find_all("li")
+    for i in li:
+        #print(i)
+        if "の映画情報・感想・評価・動画配信" in i.text:
+            #print(i.text)
+            title_j = i.text.replace("の映画情報・感想・評価・動画配信", "")
     
+    #タイトル (en)
+    title_e = t_soup.find("p", class_ = "p-content-detail__original").text
+    #print(title_e)
+
+    names = []
+    time_ = []
+    reviews = []
+    scores = []
+    #レビューとコメントはp-marksごとに取得する方法が良さそう
+    p_marks = t_soup.find_all("div", class_="p-mark")
+    for p in p_marks:
+        #<time class="c-media__date" datetime="2019-05-30 16:58">2019/05/30 16:58</time>
+        #<h4 class="c-media__text"><a href="/movies/56668/reviews/96034290">つばさの感想・評価</a></h4>
+        name = p.find("h4", class_="c-media__text").text
+        time = p.find("time", class_="c-media__date").text
+        review = p.find("div", class_="p-mark__review").text
+        score = p.find("div", class_="c-rating__score").text
+        names.append(name)
+        time_.append(time)
+        reviews.append(review)
+        scores.append(score)
+        print(name)
+        print(time)
+        print(review)
+        print(score)
+    
+
+#「平均スコア」がついているかのcheck >> 「-点」となっていたら今後上映予定の映画
+def check(df):
+    df = df.copy() 
+    df = df[df["平均スコア"] != "-点"]
     return df 
 
 
 
 if __name__ == "__main__":
+
     genres = [
     "SF","ドラマ","恋愛","ホラー",
     "戦争","音楽","ミュージカル", "スポーツ",
@@ -98,22 +156,22 @@ if __name__ == "__main__":
     for i,g in enumerate(genres):
         print("{}:{}".format(g,i))
     
-    #num = int(input("スクレイピングしたジャンルの番号を入力してください>>"))
+    num = int(input("スクレイピングしたジャンルの番号を入力してください>>"))
     
-    #genre = genres[num]
+    genre = genres[num]
 
-    #csv_dir = r'C:\Users\mkou0\Desktop\movie_search\csv'
+    csv_dir = r'C:\Users\mkou0\Desktop\movie_search\csv'
 
-    #csv_name = csv_dir + r"\{}.csv".format(genre)
-    #data = pd.read_csv(csv_name)
+    csv_name = csv_dir + r"\{}.csv".format(genre)
+    data = pd.read_csv(csv_name)
     #あらすじが書かれている映画のみを扱う
-    #data = data[data["あらすじ"] != ""]
-    #urls = data["URL"].values
+    data = check(data)
+    urls = data["URL"].values
+    data["title"] = data["タイトル(日本名)"] + data["タイトル(英名)"]
 
-    data["タイトル（日本名）"] != ""
-
-    #dir:urls にあるurlを使うかもう一度スクレイピングしてそこからURLを取得するか
+    #data["url"]をつかう
     for url in urls:
-        p_urls = get_urls_per_page(url)
 
-           
+        p_urls = get_urls_per_page(url, genre)
+
+    open_title_url(p_url, "SF")         

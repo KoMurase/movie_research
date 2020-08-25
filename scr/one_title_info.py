@@ -17,8 +17,8 @@ import pandas as pd
 def scraiping_from_url(url):
     print(url)
 
-    title_url = url
-    #title_url = "https://filmarks.com//movies/41216"
+    #title_url = url
+    title_url = "https://filmarks.com//movies/81472"
     t_r = requests.get(title_url)
     t_soup = BeautifulSoup(t_r.text, 'lxml')
 
@@ -43,7 +43,7 @@ def scraiping_from_url(url):
         if "の映画情報・感想・評価・動画配信" in i.text:
             #print(i.text)
             title_j = i.text.replace("の映画情報・感想・評価・動画配信", "")
-            #print(title)
+            print(title_j)
     #タイトル (en)
     title_e = t_soup.find("p", class_ = "p-content-detail__original").text
     #print(title_e)
@@ -193,7 +193,7 @@ if __name__ == '__main__':
     "クライム", "バイオレンス", "サスペンス", "単発ドラマ",
     "ミステリー", "ファミリー", "ファンタジー", "スリラー",
     "歴史", "時代劇", "西部劇","オムニバス","伝記",
-    "ドキュメンタリー","パニック"
+    "ドキュメンタリー","パニック","実験"
             ]
     for i,g in enumerate(genres):
         print("{}:{}".format(g,i))
