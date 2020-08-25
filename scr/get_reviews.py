@@ -12,8 +12,6 @@ import re
 import pandas as pd 
 
 
-
-
 url = "https://filmarks.com/movies/63747"
 
 title_url = url
@@ -74,6 +72,18 @@ def get_urls_per_page(url):
 
     return p_urls
 
+#タイトルがあるかどうかのcheck
+def check_title(df):
+    df = df.copy() 
+    df["flg_title"] = 0
+    if df["タイトル（日本名）"] != "":
+        df["flg_title"] = 1
+    if df["タイトル（英名）"] != "":
+        df["flg_title"] = 1 
+    
+    return df 
+
+
 
 if __name__ == "__main__":
     genres = [
@@ -96,10 +106,14 @@ if __name__ == "__main__":
 
     #csv_name = csv_dir + r"\{}.csv".format(genre)
     #data = pd.read_csv(csv_name)
-    #data = data[""]
+    #あらすじが書かれている映画のみを扱う
+    #data = data[data["あらすじ"] != ""]
+    #urls = data["URL"].values
+
+    data["タイトル（日本名）"] != ""
 
     #dir:urls にあるurlを使うかもう一度スクレイピングしてそこからURLを取得するか
+    for url in urls:
+        p_urls = get_urls_per_page(url)
 
-    get_urls_per_page()
-
-    
+           

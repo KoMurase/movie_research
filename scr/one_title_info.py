@@ -73,6 +73,10 @@ def scraiping_from_url(url):
     place = ""
     show_time = ""
     
+    #上映日：製作国：上映時間の情報が映画ごとに違うため
+    ex_col = w 
+    print(ex_col)
+
     
     if "上映日：" in w ==True and len(w)>0:
         #when_shown = w.split("／")[0].replace('上映日：','')
@@ -138,7 +142,7 @@ def scraiping_from_url(url):
             #print(li)
             for l in li:
                 name = l.find("a", class_="c-label").text
-                print("name",name)
+                #print("name",name)
                 kantoku.append(name)
             #print(job_type, name)
 
@@ -158,7 +162,7 @@ def scraiping_from_url(url):
                 name = l.text
                 gensaku.append(name)
             #name = p.find("li", class_="p-content-detail__people-list-desc").text
-            print(job_type, name)
+            #print(job_type, name)
     
     #print("kantoku",kantoku)
     #print("kyakuhon",kyakuhon)
@@ -170,7 +174,7 @@ def scraiping_from_url(url):
         #print(cast)
         casts.append(cast)
 
-    return n_review, n_score, title_j, title_e, wh_created,year,month,day, \
+    return n_review, n_score, title_j, title_e, wh_created,ex_col,year,month,day, \
         place, show_time, genre, summary, kantoku, kyakuhon, gensaku, casts, title_url 
 
 def pickle_load(file_):
@@ -216,7 +220,7 @@ if __name__ == '__main__':
 
     columns = [
         "レビュー数", "平均スコア","タイトル(日本名)","タイトル(英名)","製作日",
-        "年(上映日)","月(上映日)","日(上映日)","製作国", "上映時間","ジャンル","あらすじ",
+        "上映日：製作国：上映時間","年(上映日)","月(上映日)","日(上映日)","製作国", "上映時間","ジャンル","あらすじ",
         "監督", "脚本", "原作", "キャスト" ,"URL"
         ] 
     #csvの保存先
@@ -226,12 +230,12 @@ if __name__ == '__main__':
     
     for i, url in enumerate(tqdm(urls)):
         
-        n_review, n_score, title_j, title_e, wh_created,year,month,day, \
+        n_review, n_score, title_j, title_e, wh_created,ex_col,year,month,day, \
         place, show_time, genre, summary, kantoku, kyakuhon, gensaku, casts, title_url= scraiping_from_url(url)
 
 
         data = [n_review, n_score, title_j, title_e, wh_created, \
-                year, month, day, place, show_time, genre, summary, \
+                ex_col,year, month, day, place, show_time, genre, summary, \
                 kantoku, kyakuhon, gensaku, casts, title_url]
 
         #print(len(data))

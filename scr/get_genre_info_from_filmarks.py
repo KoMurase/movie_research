@@ -49,7 +49,7 @@ def get_genre_info(genre, path):
     max_page = int(pgnation.get('href').split('=')[-1])
     print("max_page : ",max_page)
 
-    #ページごとのhtmlを取得
+    #ページごとのurlを取得
     for p in tqdm(range(1, max_page+1)):
         p_url = g_url + '?page=' + str(p)
         #urllib.request.urlretrieve(p_url, '{}/{}.html'.format(save_dir, p))
