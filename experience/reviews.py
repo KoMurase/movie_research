@@ -12,6 +12,9 @@ import re
 import pandas as pd 
 
 def get_reviews(p_url, genre):
+    
+    #p_url = "https://filmarks.com//movies/81472"
+    p_url = "https://filmarks.com/movies/81472?page=1"
 
     page = p_url.split('=')[-1]
     t_r = requests.get(p_url)
@@ -24,12 +27,12 @@ def get_reviews(p_url, genre):
     for i in li:
         #print(i)
         if "の映画情報・感想・評価・動画配信" in i.text:
-            #print(i.text)
+            print(i.text)
             title_j = i.text.replace("の映画情報・感想・評価・動画配信", "")
     
     #タイトル (en)
     title_e = t_soup.find("p", class_ = "p-content-detail__original").text
-    #print(title_e)
+    print(title_e)
 
     names = []
     time_ = []

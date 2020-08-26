@@ -3,86 +3,22 @@ import pickle
 from bs4 import BeautifulSoup 
 import os 
 import urllib
-
 from tqdm import tqdm 
 import time 
-
 import re 
-
 import pandas as pd 
+import numpy as np
+import slackweb
 
 
-url = "https://filmarks.com/movies/63747"
+import re
 
-title_url = url
-t_r = requests.get(title_url)
-t_soup = BeautifulSoup(t_r.text, 'lxml')
 
-#レビューのページネーションを取得してサンプルとしていくつか取得する
-#<a class="c-pagination__last" href="/movies/63747?page=10343">&gt;|</a>
+slack_url = "https://hooks.slack.com/services/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"
 
-#n_page = t_soup.find("a", class_ = "c-pagination__last")
-#max_page = int(n_page.get('href').split("=")[-1])
-#print(max_page)
+def open_title_url(genre, url):
 
-#for p in tqdm(range(1, max_page+1)):
-#    p_url = title_url + '?page=' + str(p)
-
-"""
-#個々のレビューと評価値（星の数）を取得する
-t_soup.find_all("")
-#個々のレビュー <div class="p-mark__review">自分が知ってるキャラ...</div>
-#星の数<div class="c-rating__score">3.5</div>
-reviews = t_soup.find_all("")
-
-"""
-
-#レビューとコメントはp-marksごとに取得する方法が良さそう
-p_marks = t_soup.find_all("div", class_="p-mark")
-
-for p in p_marks:
-    review = p.find("div", class_="p-mark__review")
-    score = p.find("div", class_="c-rating__score")
-    print(review)
-    print(score)
-    print()
-
-#for i, r in enumerate(reviews):
-#    print("score:{}, review:{}".format((i, r)))
-
-def get_urls_per_page(url, genre):
-   
-    title_url = "https://filmarks.com/movies/63747"
-    t_r = requests.get(title_url)
-    t_soup = BeautifulSoup(t_r.text, 'lxml')
-
-    #レビューのページネーションを取得してサンプルとしていくつか取得する
-    #<a class="c-pagination__last" href="/movies/63747?page=10343">&gt;|</a>
-
-    n_page = t_soup.find("a", class_ = "c-pagination__last")
-    max_page = int(n_page.get('href').split("=")[-1])
-    print(max_page)
-
-    #1タイトルにおけるreview情報のURL全部
-    p_urls = []
-    for p in tqdm(range(1, max_page+1)):
-        p_url = title_url + '?page=' + str(p)
-        p_urls.append(p_url)
-
-    id_ = title_url.split("/")[-1] #映画情報固有のURLの末尾数桁
-
-    save_title_url(genre, id_, p_urls)
-
-def save_title_url(genre, id_, p_urls):
-    
-    save_path = r'C:\Users\mkou0\Desktop\movie_search\review_urls\{}\id_{}.pickle'.format(genre, id_)
-
-    with open(save_path, mode='wb') as f:
-        pickle.dump(p_urls,f)
-
-    return "Saved the reviews of id:{}".format(id_)
-
-def open_title_url(genre, id_):
+    id_ = url.split('/')[-1]
     
     save_path = r'C:\Users\mkou0\Desktop\movie_search\review_urls\{}\id_{}.pickle'.format(genre, id_)
 
@@ -91,7 +27,8 @@ def open_title_url(genre, id_):
 
     return p_urls
 
-def get_reviews(p_url, genre):
+def get_reviews(genre, p_url):
+
 
     page = p_url.split('=')[-1]
     t_r = requests.get(p_url)
@@ -111,10 +48,14 @@ def get_reviews(p_url, genre):
     title_e = t_soup.find("p", class_ = "p-content-detail__original").text
     #print(title_e)
 
+    csv_name = p_url.split('/')[-1]
+
     names = []
     time_ = []
     reviews = []
     scores = []
+    url_dummy = []
+    title_dummy =[]
     #レビューとコメントはp-marksごとに取得する方法が良さそう
     p_marks = t_soup.find_all("div", class_="p-mark")
     for p in p_marks:
@@ -128,18 +69,56 @@ def get_reviews(p_url, genre):
         time_.append(time)
         reviews.append(review)
         scores.append(score)
-        print(name)
-        print(time)
-        print(review)
-        print(score)
+        url_dummy.append(p_url)
+        title_dummy.append(title_j+'|'+title_e)
+        #print(name)
+        #print(time)
+        #print(review)
+        #print(score)
+
+    li = t_soup.find_all("h2", class_="p-content-detail__title")
+    for l in li:
+        title = l.find("span").text
+
     
+    code_regex = re.compile('[!"#$%&\'\\\\()*+,-./:;<=>?@[\\]^_`{|}~「」〔〕“”〈〉『』【】＆＊・（）＄＃＠。、？！｀＋￥％]')
+    cleaned_text = code_regex.sub('', title)
+
+    data = [title_dummy, names, time_, reviews, scores,url_dummy ]
+    cols = ["title","name", "time", "review", "score","URL"]
+
+    data = pd.DataFrame(data).T
+    data.columns = cols
+
+    save_path = r'C:\Users\mkou0\Desktop\movie_search\review_csv'
+    if not os.path.exists(save_path):
+        os.makedirs(save_path, exist_ok=True)
+    save_path = r'C:\Users\mkou0\Desktop\movie_search\review_csv\{}'.format(genre)
+    if not os.path.exists(save_path):
+        os.makedirs(save_path, exist_ok=True)
+    save_path = save_path + r'\{}'.format(cleaned_text)
+    if not os.path.exists(save_path):
+        os.makedirs(save_path, exist_ok=True) 
+
+    data.to_csv(save_path + r"\{}_{}.csv".format(title, page), index=False)
+    
+    return '{}からの情報をcsvにしました'.format(p_url)
+
 
 #「平均スコア」がついているかのcheck >> 「-点」となっていたら今後上映予定の映画
 def check(df):
     df = df.copy() 
     df = df[df["平均スコア"] != "-点"]
+
     return df 
 
+def pickle_load(file_):
+
+    with open(file_, mode='rb') as f:
+        data = pickle.load(f)
+    print("{}のファイルを読み込みました".format(file_))
+   
+    return data
 
 
 if __name__ == "__main__":
@@ -156,22 +135,40 @@ if __name__ == "__main__":
     for i,g in enumerate(genres):
         print("{}:{}".format(g,i))
     
-    num = int(input("スクレイピングしたジャンルの番号を入力してください>>"))
-    
+    #num = int(input("スクレイピングしたジャンルの番号を入力してください>>"))
+    num=0
     genre = genres[num]
 
     csv_dir = r'C:\Users\mkou0\Desktop\movie_search\csv'
-
     csv_name = csv_dir + r"\{}.csv".format(genre)
     data = pd.read_csv(csv_name)
-    #あらすじが書かれている映画のみを扱う
+
     data = check(data)
-    urls = data["URL"].values
-    data["title"] = data["タイトル(日本名)"] + data["タイトル(英名)"]
+    #urls = data["URL"].values
+    #data["title"] = data["タイトル(日本名)"] + data["タイトル(英名)"]
 
-    #data["url"]をつかう
-    for url in urls:
+    save_path = r'C:\Users\mkou0\Desktop\movie_search\review_urls\{}'.format(genre)
+    pickle_files = os.listdir(save_path)
 
-        p_urls = get_urls_per_page(url, genre)
+    #slackに通知
+    slack = slackweb.Slack(url=slack_url)
+    #slack.notify(text=text)
 
-    open_title_url(p_url, "SF")         
+    print(len(pickle_files))
+    c=0
+    for file_ in tqdm(pickle_files):
+        text = '{}を開けています'.format(file_)
+        slack = slackweb.Slack(url=slack_url)
+        slack.notify(text=text)
+        urls=pickle_load(save_path +"\{}".format(str(file_))) 
+
+        for url in tqdm(urls):
+            get_reviews(genre, url)
+
+            #text = "Open {}!".format(url)
+            #slack.notify(text=text)
+
+        text = "{} / {}".format(c, len(pickle_files))
+        slack.notify(text=text)
+        c += 1
+    print("ジャンル{}の{}作品をcsvにまとめます".format(genre, len(pickle_files)))
