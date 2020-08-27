@@ -12,6 +12,7 @@ import re
 import pandas as pd 
 import numpy as np
 
+import math
 
 """
 url = "https://filmarks.com/movies/63747"
@@ -73,6 +74,8 @@ def get_urls_per_page(url, genre):
         print(max_page)
     else:
         max_page = 1
+
+    max_page = math.ceil(max_page*0.8)
     print(max_page)
 
     #1タイトルにおけるreview情報のURL全部

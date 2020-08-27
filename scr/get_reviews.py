@@ -9,15 +9,15 @@ import re
 import pandas as pd 
 import numpy as np
 import slackweb
-
-
 import re
 
+import config
 
-slack_url = "https://hooks.slack.com/services/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"
+#slack_url = config.slack_url
 
 def open_title_url(genre, url):
 
+    print(url)
     id_ = url.split('/')[-1]
     
     save_path = r'C:\Users\mkou0\Desktop\movie_search\review_urls\{}\id_{}.pickle'.format(genre, id_)
@@ -28,7 +28,6 @@ def open_title_url(genre, url):
     return p_urls
 
 def get_reviews(genre, p_url):
-
 
     page = p_url.split('=')[-1]
     t_r = requests.get(p_url)
@@ -120,6 +119,13 @@ def pickle_load(file_):
    
     return data
 
+def save_title_path(path, save_files):
+    #print(p_urls)
+
+    with open(path, mode='wb') as f:
+        pickle.dump(save_files,f)
+
+    return "Save"
 
 if __name__ == "__main__":
 
@@ -135,8 +141,7 @@ if __name__ == "__main__":
     for i,g in enumerate(genres):
         print("{}:{}".format(g,i))
     
-    #num = int(input("スクレイピングしたジャンルの番号を入力してください>>"))
-    num=0
+    num = int(input("スクレイピングしたジャンルの番号を入力してください>>"))
     genre = genres[num]
 
     csv_dir = r'C:\Users\mkou0\Desktop\movie_search\csv'
@@ -155,20 +160,30 @@ if __name__ == "__main__":
     #slack.notify(text=text)
 
     print(len(pickle_files))
+
+    #エラーが出たとき用のセーブ
+    rest_save_path = r"C:\Users\mkou0\Desktop\movie_search\review_urls\rest.pickle"
+
     c=0
     for file_ in tqdm(pickle_files):
         text = '{}を開けています'.format(file_)
-        slack = slackweb.Slack(url=slack_url)
-        slack.notify(text=text)
-        urls=pickle_load(save_path +"\{}".format(str(file_))) 
+        print(text)
+        #slack = slackweb.Slack(url=slack_url)
+        #slack.notify(text=text)
+        urls=pickle_load(save_path +"\{}".format(str(file_)))
 
-        for url in tqdm(urls):
-            get_reviews(genre, url)
+        #for url in tqdm(urls):
+        #    get_reviews(genre, url)
 
             #text = "Open {}!".format(url)
             #slack.notify(text=text)
+        
+        pickle_files.remove(file_)
+        #print(pickle_files)
+        save_title_path(rest_save_path, pickle_files)
 
+        #残り表示
         text = "{} / {}".format(c, len(pickle_files))
-        slack.notify(text=text)
+        print(text)
         c += 1
-    print("ジャンル{}の{}作品をcsvにまとめます".format(genre, len(pickle_files)))
+

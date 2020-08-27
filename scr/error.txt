@@ -1,0 +1,15 @@
+:\Users\mkou0\Desktop\movie_search\review_urls\SF\id_32280.pickleのファイルを読み込みました/16 [00:08<00:00,  1.78it/s]
+ 28%|█████████████████████▌                                                      | 121/427 [3:27:09<3:43:03, 43.74s/it]C:\Users\mkou0\Desktop\movie_search\review_urls\SF\id_3242.pickleのファイルを読み込みました5/65 [00:39<00:00,  1.70it/s]
+ 29%|█████████████████████▏                                                    | 122/427 [3:33:53<12:51:49, 151.83s/it]C:\Users\mkou0\Desktop\movie_search\review_urls\SF\id_32612.pickleのファイルを読み込みました432 [06:44<00:00,  1.02s/it]
+                                                                                                                       Traceback (most recent call last):                                                                | 0/3 [00:00<?, ?it/s]
+  File "get_reviews.py", line 164, in <module>
+    get_reviews(genre, url)
+  File "get_reviews.py", line 102, in get_reviews
+    data.to_csv(save_path + r"\{}_{}.csv".format(title, page), index=False)
+  File "C:\Users\mkou0\AppData\Local\Continuum\anaconda3\lib\site-packages\pandas\core\generic.py", line 3020, in to_csv
+    formatter.save()
+  File "C:\Users\mkou0\AppData\Local\Continuum\anaconda3\lib\site-packages\pandas\io\formats\csvs.py", line 157, in save
+    compression=self.compression)
+  File "C:\Users\mkou0\AppData\Local\Continuum\anaconda3\lib\site-packages\pandas\io\common.py", line 424, in _get_handle
+    f = open(path_or_buf, mode, encoding=encoding, newline="")
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\mkou0\\Desktop\\movie_search\\review_csv\\SF\\COSMIC RESCUE  The Moonlight Generations \\COSMIC RESCUE - The Moonlight Generations -_1.csv'
