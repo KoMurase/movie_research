@@ -117,7 +117,6 @@ def open_title_url(genre, id_):
 
 def get_reviews(p_url, genre):
 
-
     page = p_url.split('=')[-1]
     t_r = requests.get(p_url)
     t_soup = BeautifulSoup(t_r.text, 'lxml')

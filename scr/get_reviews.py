@@ -82,6 +82,9 @@ def get_reviews(genre, p_url):
     
     code_regex = re.compile('[!"#$%&\'\\\\()*+,-./:;<=>?@[\\]^_`{|}~「」〔〕“”〈〉『』【】＆＊・（）＄＃＠。、？！｀＋￥％]')
     cleaned_text = code_regex.sub('', title)
+    cleaned_text = cleaned_text.replace("　", " ")
+    #￥　／　：　＊　？　”　＜　＞　｜
+    cleaned_text = cleaned_text.replace("/", "").replace(":","")
 
     data = [title_dummy, names, time_, reviews, scores,url_dummy ]
     cols = ["title","name", "time", "review", "score","URL"]
@@ -99,7 +102,7 @@ def get_reviews(genre, p_url):
     if not os.path.exists(save_path):
         os.makedirs(save_path, exist_ok=True) 
 
-    data.to_csv(save_path + r"\{}_{}.csv".format(title, page), index=False)
+    data.to_csv(save_path + r"\{}_{}.csv".format(cleaned_text, page), index=False)
     
     return '{}からの情報をcsvにしました'.format(p_url)
 
@@ -156,24 +159,26 @@ if __name__ == "__main__":
     pickle_files = os.listdir(save_path)
 
     #slackに通知
-    slack = slackweb.Slack(url=slack_url)
+    #slack = slackweb.Slack(url=slack_url)
     #slack.notify(text=text)
 
     print(len(pickle_files))
 
     #エラーが出たとき用のセーブ
     rest_save_path = r"C:\Users\mkou0\Desktop\movie_search\review_urls\rest.pickle"
+    pickle_files = pickle_load(rest_save_path)
+    print("rest:",len(pickle_files))
 
     c=0
     for file_ in tqdm(pickle_files):
-        text = '{}を開けています'.format(file_)
+        text = '\n{}を開けています'.format(file_)
         print(text)
         #slack = slackweb.Slack(url=slack_url)
         #slack.notify(text=text)
         urls=pickle_load(save_path +"\{}".format(str(file_)))
 
-        #for url in tqdm(urls):
-        #    get_reviews(genre, url)
+        for url in tqdm(urls):
+            get_reviews(genre, url)
 
             #text = "Open {}!".format(url)
             #slack.notify(text=text)
@@ -183,7 +188,7 @@ if __name__ == "__main__":
         save_title_path(rest_save_path, pickle_files)
 
         #残り表示
-        text = "{} / {}".format(c, len(pickle_files))
+        text = "\n{} / {}".format(c, len(pickle_files))
         print(text)
         c += 1
 
