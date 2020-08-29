@@ -2,14 +2,93 @@
  28%|█████████████████████▌                                                      | 121/427 [3:27:09<3:43:03, 43.74s/it]C:\Users\mkou0\Desktop\movie_search\review_urls\SF\id_3242.pickleのファイルを読み込みました5/65 [00:39<00:00,  1.70it/s]
  29%|█████████████████████▏                                                    | 122/427 [3:33:53<12:51:49, 151.83s/it]C:\Users\mkou0\Desktop\movie_search\review_urls\SF\id_32612.pickleのファイルを読み込みました432 [06:44<00:00,  1.02s/it]
                                                                                                                        Traceback (most recent call last):                                                                | 0/3 [00:00<?, ?it/s]
-  File "get_reviews.py", line 164, in <module>
+
+
+14 / 312█████████████████████████████████████████████████████████████████████████████| 272/272 [03:08<00:00,  1.36it/s]
+ 27%|███████████████████▉                                                      | 115/427 [4:23:21<13:23:01, 154.43s/it]
+id_59603.pickleを開けています
+C:\Users\mkou0\Desktop\movie_search\review_urls\SF\id_59603.pickleのファイルを読み込みました
+                                                                                                                       115 / 311█████████████████████████████████████████████████████████████████████████████| 960/960 [11:54<00:00,  1.15it/s]
+ 27%|████████████████████                                                      | 116/427 [4:35:16<27:51:43, 322.52s/it]
+id_59769.pickleを開けています
+C:\Users\mkou0\Desktop\movie_search\review_urls\SF\id_59769.pickleのファイルを読み込みました
+                                                                                                                       116 / 310█████████████████████████████████████████████████████████████████████████████| 150/150 [01:43<00:00,  1.32it/s]
+ 27%|████████████████████▎                                                     | 117/427 [4:36:59<22:07:05, 256.86s/it]
+id_60187.pickleを開けています
+C:\Users\mkou0\Desktop\movie_search\review_urls\SF\id_60187.pickleのファイルを読み込みました
+                                                                                                                       117 / 309█████████████████████████████████████████████████████████████████████████████| 406/406 [04:18<00:00,  1.38it/s]
+ 28%|████████████████████▍                                                     | 118/427 [4:41:18<22:05:09, 257.31s/it]
+id_60677.pickleを開けています
+C:\Users\mkou0\Desktop\movie_search\review_urls\SF\id_60677.pickleのファイルを読み込みました
+                                                                                                                       Traceback (most recent call last):                                                              | 0/284 [00:00<?, ?it/s]
+  File "get_reviews.py", line 177, in <module>
     get_reviews(genre, url)
-  File "get_reviews.py", line 102, in get_reviews
-    data.to_csv(save_path + r"\{}_{}.csv".format(title, page), index=False)
+  File "get_reviews.py", line 103, in get_reviews
+    data.to_csv(save_path + r"\{}_{}.csv".format(cleaned_text, page), index=False)
   File "C:\Users\mkou0\AppData\Local\Continuum\anaconda3\lib\site-packages\pandas\core\generic.py", line 3020, in to_csv
     formatter.save()
   File "C:\Users\mkou0\AppData\Local\Continuum\anaconda3\lib\site-packages\pandas\io\formats\csvs.py", line 157, in save
     compression=self.compression)
   File "C:\Users\mkou0\AppData\Local\Continuum\anaconda3\lib\site-packages\pandas\io\common.py", line 424, in _get_handle
     f = open(path_or_buf, mode, encoding=encoding, newline="")
-FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\mkou0\\Desktop\\movie_search\\review_csv\\SF\\COSMIC RESCUE  The Moonlight Generations \\COSMIC RESCUE - The Moonlight Generations -_1.csv'
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\mkou0\\Desktop\\movie_search\\review_csv\\SF\\トランスフォーマー最後の騎士王\\トランスフォーマー/最後の騎士王_1.csv'
+
+
+
+
+
+./review_csv/SF/ミムジー 〜未来からのメッセージ〜/ミムジー 〜未来からのメッセージ〜_1.csv
+---------------------------------------------------------------------------
+UnicodeEncodeError                        Traceback (most recent call last)
+<ipython-input-26-8c678ae9a5c0> in <module>
+      2 for csv in csv_files:
+      3     print(csv)
+----> 4     df = pd.read_csv(csv)
+      5     data = pd.concat([data, df], axis=0)
+      6 
+
+~\AppData\Local\Continuum\anaconda3\lib\site-packages\pandas\io\parsers.py in parser_f(filepath_or_buffer, sep, delimiter, header, names, index_col, usecols, squeeze, prefix, mangle_dupe_cols, dtype, engine, converters, true_values, false_values, skipinitialspace, skiprows, skipfooter, nrows, na_values, keep_default_na, na_filter, verbose, skip_blank_lines, parse_dates, infer_datetime_format, keep_date_col, date_parser, dayfirst, iterator, chunksize, compression, thousands, decimal, lineterminator, quotechar, quoting, doublequote, escapechar, comment, encoding, dialect, tupleize_cols, error_bad_lines, warn_bad_lines, delim_whitespace, low_memory, memory_map, float_precision)
+    700                     skip_blank_lines=skip_blank_lines)
+    701 
+--> 702         return _read(filepath_or_buffer, kwds)
+    703 
+    704     parser_f.__name__ = name
+
+~\AppData\Local\Continuum\anaconda3\lib\site-packages\pandas\io\parsers.py in _read(filepath_or_buffer, kwds)
+    427 
+    428     # Create the parser.
+--> 429     parser = TextFileReader(filepath_or_buffer, **kwds)
+    430 
+    431     if chunksize or iterator:
+
+~\AppData\Local\Continuum\anaconda3\lib\site-packages\pandas\io\parsers.py in __init__(self, f, engine, **kwds)
+    893             self.options['has_index_names'] = kwds['has_index_names']
+    894 
+--> 895         self._make_engine(self.engine)
+    896 
+    897     def close(self):
+
+~\AppData\Local\Continuum\anaconda3\lib\site-packages\pandas\io\parsers.py in _make_engine(self, engine)
+   1120     def _make_engine(self, engine='c'):
+   1121         if engine == 'c':
+-> 1122             self._engine = CParserWrapper(self.f, **self.options)
+   1123         else:
+   1124             if engine == 'python':
+
+~\AppData\Local\Continuum\anaconda3\lib\site-packages\pandas\io\parsers.py in __init__(self, src, **kwds)
+   1851         kwds['usecols'] = self.usecols
+   1852 
+-> 1853         self._reader = parsers.TextReader(src, **kwds)
+   1854         self.unnamed_cols = self._reader.unnamed_cols
+   1855 
+
+pandas/_libs/parsers.pyx in pandas._libs.parsers.TextReader.__cinit__()
+
+pandas/_libs/parsers.pyx in pandas._libs.parsers.TextReader._setup_parser_source()
+
+UnicodeEncodeError: 'mbcs' codec can't encode characters in position 0--1: invalid character
+
+
+error ../review_csv/SF/ミムジー 〜未来からのメッセージ〜/ミムジー未来からのメッセージ.csv
+ 92%|████████████████████████████████████████████████████████████████████▎     | 53281/57689 [5:51:09<12:56,  5.68it/s]
+ error ../review_csv/SF/世界侵略ロサンゼルス決戦/世界侵略
