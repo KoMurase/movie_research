@@ -22,7 +22,7 @@ def pdreadcsv(csv_path):
     
 if __name__ == "__main__":
 
-    path = "/Users/mkou0/Desktop/movie_search/review_csv/SF"
+    path = "/Users/mkou0/Desktop/movie_research/review_csv/trouble_folder"
     folders = os.listdir(path)
     csv_folders=[]
     for folder in folders:
@@ -37,6 +37,6 @@ if __name__ == "__main__":
   
     start = time.time()
     df = readcsv_map_multi(csv_files)
-    df.to_csv("/Users/mkou0/Desktop/movie_search/review_csv/SF_data.csv", index=False)
+    df.to_csv("/Users/mkou0/Desktop/movie_research/review_csv/SF_data_2.csv", index=False)
     process_time = time.time() - start
     print('csv読み込み時間：{:.3f}s'.format(process_time))

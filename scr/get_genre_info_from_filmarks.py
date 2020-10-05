@@ -71,6 +71,16 @@ if __name__ == "__main__":
     "ドキュメンタリー","パニック"
             ]
 
+    genres2 = [
+    "SF","Drama","Romance","Horror",
+    "War","Music","Musical", "Sports",
+    "TeenFilm", "Comedy", "Actions", "Adventures",
+    "クライム", "バイオレンス", "サスペンス", "One_Shot_Dramas",
+     "Mistery", "Family", "Fantasy", "Thriller",
+    "History", "Zidaigeki", "WesternMovies","Omnibus","Biography",
+    "Documentary","Pannic"
+            ]
+
     for i,g in enumerate(genres):
         print("{}:{}".format(g,i))
     

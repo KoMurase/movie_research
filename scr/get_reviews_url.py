@@ -178,12 +178,21 @@ if __name__ == "__main__":
     "歴史", "時代劇", "西部劇","オムニバス","伝記",
     "ドキュメンタリー","パニック"
             ]
+    genres2 = [
+    "SF","Drama","Romance","Horror",
+    "War","Music","Musical", "Sports",
+    "TeenFilm", "Comedy", "Actions", "Adventures",
+    "クライム", "バイオレンス", "サスペンス", "One_Shot_Dramas",
+     "Mistery", "Family", "Fantasy", "Thriller",
+    "History", "Zidaigeki", "WesternMovies","Omnibus","Biography",
+    "Documentary","Pannic"
+            ]
     for i,g in enumerate(genres):
         print("{}:{}".format(g,i))
     
     num = int(input("スクレイピングしたジャンルの番号を入力してください>>"))
     
-    genre = genres[num]
+    genre = genres2[num]
 
     csv_dir = r'C:\Users\mkou0\Desktop\movie_search\csv'
 
