@@ -87,7 +87,7 @@ if __name__ == "__main__":
     
     genre = genres2[num]
 
-    save_dir = r'C:\Users\mkou0\Desktop\movie_search\urls'
+    save_dir = r'C:\Users\mkou0\Desktop\movie_research\urls'
     save_dir = save_dir+r'\url_{}'.format(genre)
 
     print("url_{}ディレクトリを探索します".format(genre))

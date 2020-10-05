@@ -91,11 +91,11 @@ def get_urls_per_page(url, genre):
 def save_title_url(genre, id_, p_urls):
     #print(p_urls)
 
-    save_path = r'C:\Users\mkou0\Desktop\movie_search\review_urls'
+    save_path = r'C:\Users\mkou0\Desktop\movie_research\review_urls'
 
     if not os.path.exists(save_path):
         os.mkdir(save_path)
-    save_path = r'C:\Users\mkou0\Desktop\movie_search\review_urls\{}'.format(genre)
+    save_path = r'C:\Users\mkou0\Desktop\movie_research\review_urls\{}'.format(genre)
     if not os.path.exists(save_path):
         os.mkdir(save_path) 
     
@@ -108,7 +108,7 @@ def save_title_url(genre, id_, p_urls):
 
 def open_title_url(genre, id_):
     
-    save_path = r'C:\Users\mkou0\Desktop\movie_search\review_urls\{}\id_{}.pickle'.format(genre, id_)
+    save_path = r'C:\Users\mkou0\Desktop\movie_research\review_urls\{}\id_{}.pickle'.format(genre, id_)
 
     with open(save_path, mode='wb') as f:
         p_urls = pickle.dump(save_path, f)
@@ -194,7 +194,7 @@ if __name__ == "__main__":
     
     genre = genres2[num]
 
-    csv_dir = r'C:\Users\mkou0\Desktop\movie_search\csv'
+    csv_dir = r'C:\Users\mkou0\Desktop\movie_research\csv'
 
     csv_name = csv_dir + r"\{}.csv".format(genre)
     data = pd.read_csv(csv_name)

@@ -210,7 +210,7 @@ if __name__ == '__main__':
     genre = genres2[num]
     print("{}の映画情報をCSVファイルにまとめていきまSHOW TIME !!".format(genre))
 
-    save_dir = r'C:\Users\mkou0\Desktop\movie_search\urls'
+    save_dir = r'C:\Users\mkou0\Desktop\movie_research\urls'
     path = save_dir + r"\url_{}".format(genre)
 
     pickle_files = os.listdir(path)

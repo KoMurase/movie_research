@@ -20,7 +20,7 @@ def open_title_url(genre, url):
     print(url)
     id_ = url.split('/')[-1]
     
-    save_path = r'C:\Users\mkou0\Desktop\movie_search\review_urls\{}\id_{}.pickle'.format(genre, id_)
+    save_path = r'C:\Users\mkou0\Desktop\movie_research\review_urls\{}\id_{}.pickle'.format(genre, id_)
 
     with open(save_path, mode='wb') as f:
         p_urls = pickle.dump(save_path, f)
@@ -92,10 +92,10 @@ def get_reviews(genre, p_url):
     data = pd.DataFrame(data).T
     data.columns = cols
 
-    save_path = r'C:\Users\mkou0\Desktop\movie_search\review_csv'
+    save_path = r'C:\Users\mkou0\Desktop\movie_research\review_csv'
     if not os.path.exists(save_path):
         os.makedirs(save_path, exist_ok=True)
-    save_path = r'C:\Users\mkou0\Desktop\movie_search\review_csv\{}'.format(genre)
+    save_path = r'C:\Users\mkou0\Desktop\movie_research\review_csv\{}'.format(genre)
     if not os.path.exists(save_path):
         os.makedirs(save_path, exist_ok=True)
     save_path = save_path + r'\{}'.format(cleaned_text)
@@ -157,14 +157,14 @@ if __name__ == "__main__":
     genre = genres2[num]
 
     #csv_dir = r'C:\Users\mkou0\Desktop\movie_search\csv'
-    csv_name = r'C:\Users\mkou0\Desktop\movie_search\csv\{}.csv'.format(genre)
+    csv_name = r'C:\Users\mkou0\Desktop\movie_research\csv\{}.csv'.format(genre)
     data = pd.read_csv(csv_name)
 
     data = check(data)
     #urls = data["URL"].values
     #data["title"] = data["タイトル(日本名)"] + data["タイトル(英名)"]
 
-    save_path = r'C:\Users\mkou0\Desktop\movie_search\review_urls\{}'.format(genre)
+    save_path = r'C:\Users\mkou0\Desktop\movie_research\review_urls\{}'.format(genre)
     pickle_files = os.listdir(save_path)
 
     #slackに通知
@@ -174,7 +174,7 @@ if __name__ == "__main__":
     print(len(pickle_files))
 
     #エラーが出たとき用のセーブ
-    rest_save_path = r"C:\Users\mkou0\Desktop\movie_search\review_urls\rest.pickle"
+    rest_save_path = r"C:\Users\mkou0\Desktop\movie_research\review_urls\rest.pickle"
     pickle_files = pickle_load(rest_save_path)
     print("rest:",len(pickle_files))
 
