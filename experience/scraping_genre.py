@@ -35,7 +35,7 @@ max_page = pgnation.get('href').split('=')[-1]
 print(max_page)
 """
 
-html_dir = path = r'C:\Users\mkou0\Desktop\film_search'
+html_dir = path = r'C:\Users\mkou0\Desktop\film_research'
 
 for g in genre_link_dic:
 

@@ -155,28 +155,11 @@ if __name__ == "__main__":
     
     num = int(input("スクレイピングしたいジャンルの番号を入力してください>>"))
     genre = genres2[num]
-
-    csv_dir = r'C:\Users\mkou0\Desktop\movie_search\csv'
-    csv_name = r'C:\Users\mkou0\Desktop\movie_research\csv\{}.csv'.format(genre)
-    data = pd.read_csv(csv_name)
-
-    #data = check(data)
-    urls = data["URL"].values
-    data["title"] = data["タイトル(日本名)"] + data["タイトル(英名)"]
-
     save_path = r'C:\Users\mkou0\Desktop\movie_research\review_urls\{}'.format(genre)
-    pickle_files = os.listdir(save_path)
-
-    #slackに通知
-    #slack = slackweb.Slack(url=slack_url)
-    #slack.notify(text=text)
-
-    print(len(pickle_files))
-
     #エラーが出たとき用のセーブ
     rest_save_path = r"C:\Users\mkou0\Desktop\movie_research\review_urls\rest.pickle"
-    #pickle_files = pickle_load(rest_save_path)
-    #print("rest:",len(pickle_files))
+    pickle_files = pickle_load(rest_save_path)
+    print("rest:",len(pickle_files))
 
     c=0
     for file_ in tqdm(pickle_files):
@@ -187,6 +170,7 @@ if __name__ == "__main__":
         urls=pickle_load(save_path +"\{}".format(str(file_)))
 
         for url in tqdm(urls):
+            time.sleep(2)
             get_reviews(genre, url)
 
             #text = "Open {}!".format(url)

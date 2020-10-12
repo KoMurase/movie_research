@@ -51,8 +51,9 @@ def get_title_url(page_url):
 
 
 def save_title_url(genre, n_page, data):
-    
-    save_path = r'C:\Users\mkou0\Desktop\movie_search\urls\url_{}\{}_page_{}.pickle'.format(genre, genre, n_page)
+    save_dir = r'C:\Users\mkou0\Desktop\movie_research\urls\url_{}'.format(genre)
+    os.makedirs(save_dir, exist_ok=True)
+    save_path = save_dir + r"\{}_page_{}.pickle".format(genre, n_page)
 
     with open(save_path, mode='wb') as f:
         pickle.dump(data,f)
@@ -93,7 +94,8 @@ if __name__ == "__main__":
     print("url_{}ディレクトリを探索します".format(genre))
     path = save_dir + r"\urls_{}.pickle".format(genre)
     
-    #ジャンルごとのURLを保存先のpickleファイルから取得
+    #
+    
     with open(path, mode='rb') as f:
         data = pickle.load(f)
     print("result>>")

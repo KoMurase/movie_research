@@ -17,8 +17,8 @@ import pandas as pd
 def scraiping_from_url(url):
     print(url)
 
-    #title_url = url
-    title_url = "https://filmarks.com//movies/81472"
+    title_url = url
+    #title_url = "https://filmarks.com//movies/81472"
     t_r = requests.get(title_url)
     t_soup = BeautifulSoup(t_r.text, 'lxml')
 
@@ -199,7 +199,7 @@ if __name__ == '__main__':
     "SF","Drama","Romance","Horror",
     "War","Music","Musical", "Sports",
     "TeenFilm", "Comedy", "Actions", "Adventures",
-    "クライム", "バイオレンス", "サスペンス", "One_Shot_Dramas",
+    "Crime", "Violence", "Suspense", "One_Shot_Dramas",
      "Mistery", "Family", "Fantasy", "Thriller",
     "History", "Zidaigeki", "WesternMovies","Omnibus","Biography",
     "Documentary","Pannic"
@@ -214,16 +214,15 @@ if __name__ == '__main__':
     path = save_dir + r"\url_{}".format(genre)
 
     pickle_files = os.listdir(path)
-    #print(pickle_files)
-   
-    urls = []
+    print(pickle_files)
 
+    urls = []
     for file_ in pickle_files:
         #print(file_[0:2])
         if file_[0:len(genre)] == genre:
             urls.extend(pickle_load(path +"\{}".format(str(file_))) )
 
-    #print(urls)
+    print('URLs',urls)
     print("ジャンル{}の{}作品をcsvにまとめます".format(genre,len(urls)))
 
 
@@ -233,7 +232,7 @@ if __name__ == '__main__':
         "監督", "脚本", "原作", "キャスト" ,"URL"
         ] 
     #csvの保存先
-    save_csv_dir = r"C:\Users\mkou0\Desktop\movie_search\csv"
+    save_csv_dir = r"C:\Users\mkou0\Desktop\movie_research\csv"
     os.makedirs(save_csv_dir, exist_ok=True) 
     genre_data = pd.DataFrame()
     
@@ -265,10 +264,10 @@ if __name__ == '__main__':
 
         time.sleep(1)
 
-        genre_data.to_csv(save_csv_dir + "\{}.csv".format(genres[num]), encoding = 'utf-8', index=False) #念のためセーブ
+        genre_data.to_csv(save_csv_dir + "\{}.csv".format(genres2[num]), encoding = 'utf-8', index=False) #念のためセーブ
 
 
-    genre_data.to_csv(save_csv_dir + "\{}.csv".format(genres[num]), encoding = 'utf-8', index=False) #最後にセーブ
+    genre_data.to_csv(save_csv_dir + "\{}.csv".format(genres2[num]), encoding = 'utf-8', index=False) #最後にセーブ
 
-    print(pd.read_csv(save_csv_dir + "\{}.csv".format(genres[num])))
-    print("{}の映画をCSVにまとめました".format(genres[num]))
+    print(pd.read_csv(save_csv_dir + "\{}.csv".format(genres2[num])))
+    print("{}の映画をCSVにまとめました".format(genres2[num]))

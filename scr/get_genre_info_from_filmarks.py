@@ -75,7 +75,7 @@ if __name__ == "__main__":
     "SF","Drama","Romance","Horror",
     "War","Music","Musical", "Sports",
     "TeenFilm", "Comedy", "Actions", "Adventures",
-    "クライム", "バイオレンス", "サスペンス", "One_Shot_Dramas",
+    "Crime", "Violence", "Suspense", "One_Shot_Dramas",
      "Mistery", "Family", "Fantasy", "Thriller",
     "History", "Zidaigeki", "WesternMovies","Omnibus","Biography",
     "Documentary","Pannic"
@@ -86,6 +86,7 @@ if __name__ == "__main__":
     
     num = int(input("スクレイピングしたいジャンルの番号を入力してください>>"))
         
+    
     if num == 0: genre = "SF"
     elif num == 1: genre = "ドラマ"
     elif num == 2: genre = "恋愛"
@@ -113,6 +114,8 @@ if __name__ == "__main__":
     elif num == 24: genre = "伝記"
     elif num == 25: genre = "ドキュメンタリー"
     elif num == 26: genre = "パニック"
+    
+    
 
     url_path = r'C:\Users\mkou0\Desktop\movie_research\genre_url.pickle'
     print("{}の映画情報がわかるURLをスクレイピングします...".format(genre))
@@ -121,10 +124,11 @@ if __name__ == "__main__":
 
     save_dir = r'C:\Users\mkou0\Desktop\movie_research\urls'
     os.makedirs(save_dir, exist_ok=True) 
+
     #保存先のディレクトリの作成
+    genre = genres2[num]
     save_dir = save_dir+r'\url_{}'.format(genre) 
     os.makedirs(save_dir, exist_ok=True)
-
     path = save_dir+r"\urls_{}.pickle".format(genre)
 
     with open(path, mode='wb') as f:

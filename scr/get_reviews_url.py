@@ -75,7 +75,7 @@ def get_urls_per_page(url, genre):
     else:
         max_page = 1
 
-    max_page = math.ceil(max_page*0.8)
+    #max_page = math.ceil(max_page*0.8)
     print(max_page)
 
     #1タイトルにおけるreview情報のURL全部
@@ -182,7 +182,7 @@ if __name__ == "__main__":
     "SF","Drama","Romance","Horror",
     "War","Music","Musical", "Sports",
     "TeenFilm", "Comedy", "Actions", "Adventures",
-    "クライム", "バイオレンス", "サスペンス", "One_Shot_Dramas",
+    "Crime", "Violence", "Suspense", "One_Shot_Dramas",
      "Mistery", "Family", "Fantasy", "Thriller",
     "History", "Zidaigeki", "WesternMovies","Omnibus","Biography",
     "Documentary","Pannic"
@@ -199,11 +199,12 @@ if __name__ == "__main__":
     csv_name = csv_dir + r"\{}.csv".format(genre)
     data = pd.read_csv(csv_name)
     #あらすじが書かれている映画のみを扱う
-    data = check(data)
+    #data = check(data)
     urls = data["URL"].values
     #data["title"] = data["タイトル(日本名)"] + data["タイトル(英名)"]
 
     #data["url"]をつかう
+    print('urls',urls)
     for url in tqdm(urls):
         get_urls_per_page(url, genre)
     
