@@ -104,7 +104,7 @@ def get_reviews(genre, p_url):
 
     data.to_csv(save_path + r"\{}_{}.csv".format(cleaned_text, page), index=False)
     
-    return '{}からの情報をcsvにしました'.format(p_url)
+    return print('{}からの情報をcsvにしました'.format(p_url))
 
 
 #「平均スコア」がついているかのcheck >> 「-点」となっていたら今後上映予定の映画
@@ -170,13 +170,13 @@ if __name__ == "__main__":
         urls=pickle_load(save_path +"\{}".format(str(file_)))
 
         for url in tqdm(urls):
-            time.sleep(2)
+            time.sleep(0.5)
             get_reviews(genre, url)
 
             #text = "Open {}!".format(url)
             #slack.notify(text=text)
         
-        pickle_files.remove(file_)
+        pickle_files.remove(file_)  #  (1)
         #print(pickle_files)
         save_title_path(rest_save_path, pickle_files)
 
@@ -184,4 +184,8 @@ if __name__ == "__main__":
         text = "\n{} / {}".format(c, len(pickle_files))
         print(text)
         c += 1
+
+
+        ###ネットワーク系のエラーがあると途中まででもセーブされずに(1)が実行されている
+        ###あとで全部保存した後に確認する必要がありそう
 

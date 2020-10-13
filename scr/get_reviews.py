@@ -187,6 +187,7 @@ if __name__ == "__main__":
         urls=pickle_load(save_path +"\{}".format(str(file_)))
 
         for url in tqdm(urls):
+            time.sleep(0.5)
             get_reviews(genre, url)
 
             #text = "Open {}!".format(url)
