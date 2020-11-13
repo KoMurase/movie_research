@@ -9,3 +9,7 @@ filmarksから映画情報を取得するプログラム
   すると, 同階層に/urlsが作られその中にurl_{ジャンル名}のフォルダが作成される.
   
 2. 次に, 同じくscrにあるget_title_url_from_one_page.py
+
+3. get_title_url_from_one_page.py
+
+4. one_title_info.py
