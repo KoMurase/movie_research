@@ -10,6 +10,5 @@ filmarksから映画情報を取得するプログラム
   
 2. 次に, 同じくscrにあるget_title_url_from_one_page.py
 
-3. get_title_url_from_one_page.py
+3. one_title_info.py
 
-4. one_title_info.py
